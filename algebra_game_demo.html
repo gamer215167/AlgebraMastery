@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AlgebraMastery - Demo</title>
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#fff; margin:0; padding:0; }
+    .container { max-width:420px; margin:0 auto; padding:24px; }
+    .card { border:2px solid #000; border-radius:16px; padding:16px; margin-bottom:16px; }
+    .black { background:#000; color:#fff; }
+    .btn { display:inline-block; width:100%; padding:12px; border-radius:10px; font-weight:700; cursor:pointer; }
+    .btn-black { background:#000; color:#fff; border:0; }
+    .btn-white { background:#fff; color:#000; border:2px solid #000; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+    .center { text-align:center; }
+    .progress { height:12px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
+    .progress > i { display:block; height:100%; background:#000; }
+    input[type=number] { width:100%; padding:12px; font-size:16px; font-weight:700; border:2px solid #000; border-radius:10px; box-sizing:border-box; }
+    .hidden { display:none; }
+    .flex { display:flex; gap:8px; }
+    .gap-3 > * { margin-right:8px; }
+    .p-3 { padding:12px; }
+    .mb-3 { margin-bottom:12px; }
+    .text-xl { font-size:18px; }
+    .text-2xl { font-size:22px; }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <!-- Home -->
+    <div id="screen-home" class="card center">
+      <div style="font-size:48px;">🧮</div>
+      <h1 style="font-size:32px;margin:8px 0;">AlgebraMastery</h1>
+      <p style="color:#6b7280;margin:0 0 12px 0;">Domina el álgebra</p>
+
+      <div class="card black" style="margin-bottom:12px;">
+        <div style="font-size:42px;">🔥</div>
+        <div class="text-2xl">Racha: <span id="streak">0</span></div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:64px;" id="pet-emoji">🐉</div>
+        <div class="text-xl" id="pet-name">Dragón</div>
+        <div class="progress" style="margin:8px 0;">
+          <i id="pet-happy-bar" style="width:90%;"></i>
+        </div>
+        <div style="margin-bottom:8px; color:#374151;">Felicidad: <span id="pet-happy">90</span>%</div>
+        <div class="flex">
+          <button class="btn btn-black" id="btn-care">🎮 Cuidar</button>
+          <button class="btn btn-white" id="btn-change">🔄 Cambiar</button>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card center">
+          <div style="font-weight:700">❤️ <span id="hearts">3</span></div>
+          <div style="font-size:12px;">Vidas</div>
+        </div>
+        <div class="card center">
+          <div style="font-weight:700">🍖 <span id="food">0</span></div>
+          <div style="font-size:12px;">Comida</div>
+        </div>
+        <div class="card center">
+          <div style="font-weight:700">💰 <span id="coins">0</span></div>
+          <div style="font-size:12px;">Monedas</div>
+        </div>
+      </div>
+
+      <div style="display:grid; gap:8px;">
+        <button class="btn btn-black" id="btn-start">📚 Empezar Lección</button>
+        <button class="btn btn-white" id="btn-shop">🎁 Tienda</button>
+      </div>
+
+      <div style="margin-top:12px; color:#6b7280;">Lecciones: <span id="current-lesson">1</span>/<span id="total-lessons">0</span></div>
+    </div>
+
+    <!-- Pets -->
+    <div id="screen-pets" class="hidden">
+      <button id="btn-back-from-pets">← Volver</button>
+      <h2 class="center">🐾 Elige Mascota</h2>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px;">
+        <button class="card" data-pet="dragon">🐉<div>Dragón</div></button>
+        <button class="card" data-pet="owl">🦉<div>Búho</div></button>
+        <button class="card" data-pet="robot">🤖<div>Robot</div></button>
+        <button class="card" data-pet="alien">👽<div>Alien</div></button>
+        <button class="card" data-pet="unicorn">🦄<div>Unicornio</div></button>
+        <button class="card" data-pet="penguin">🐧<div>Pingüino</div></button>
+      </div>
+    </div>
+
+    <!-- Pet Care -->
+    <div id="screen-pet" class="hidden">
+      <button id="btn-back-from-pet">← Volver</button>
+      <div class="card center">
+        <div id="pet-emoji-large" style="font-size:80px;">🐉</div>
+        <h2 id="pet-name-large">Dragón</h2>
+
+        <div style="margin-top:12px;">
+          <div style="font-weight:700;">Felicidad: <span id="pet-happy-2">90</span>%</div>
+          <div class="progress" style="margin:6px 0;"><i id="pet-happy-bar-2" style="width:90%;"></i></div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="font-weight:700;">Comida: <span id="food-2">0</span></div>
+          <div class="progress" style="margin:6px 0;"><i id="food-bar" style="width:20%;"></i></div>
+        </div>
+
+        <div style="margin-top:12px;">Nivel: <span id="pet-level">1</span></div>
+
+        <button class="btn btn-black" id="btn-feed">🍖 Alimentar</button>
+      </div>
+    </div>
+
+    <!-- Learning -->
+    <div id="screen-learning" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button id="btn-back-from-learning">← Volver</button>
+        <div id="life-hearts"></div>
+      </div>
+
+      <div class="card">
+        <h2 id="lesson-topic" class="center text-2xl"></h2>
+        <p class="center">Lección <span id="lesson-number">1</span>/<span id="total-lessons-2">0</span> • Problema <span id="problem-number">1</span>/5</p>
+
+        <div id="timer-box" class="p-3 mb-3" style="text-align:center; border:2px solid #000; border-radius:10px; margin-top:8px;">
+          <div id="timer-text">⏱️ 2:00</div>
+        </div>
+
+        <div style="display:flex; gap:6px; margin-bottom:12px;">
+          <div style="flex:1; height:8px; background:#e5e7eb; border-radius:6px;" id="progress-bar-container"></div>
+        </div>
+
+        <div style="border:2px solid #000; border-radius:10px; padding:12px; text-align:center; margin-bottom:12px; font-family:monospace; font-size:28px;" id="equation-box">x + 1 = 2</div>
+
+        <div style="border:2px solid #000; border-radius:10px; padding:8px; margin-bottom:12px; font-size:14px;" id="pet-hint">Búho: "Pista aquí"</div>
+
+        <div id="hint-expand" style="border:2px solid #000; border-radius:10px; padding:8px; margin-bottom:12px; background:#f3f4f6; display:none;">💡 Despeja x paso a paso</div>
+
+        <input type="number" id="answer-input" placeholder="Tu respuesta" />
+
+        <div id="feedback-box" style="margin-top:12px; display:none; padding:8px; border:2px solid #000; border-radius:8px; font-weight:700;"></div>
+
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px;">
+          <button class="btn btn-black" id="btn-hint">💡 (<span id="pista-count">0</span>)</button>
+          <button class="btn btn-black" id="btn-magnet">✨ (<span id="magnet-count">0</span>)</button>
+        </div>
+
+        <button class="btn" id="btn-check" style="margin-top:12px; background:#000; color:#fff;">✓ Verificar</button>
+      </div>
+    </div>
+
+    <!-- Shop -->
+    <div id="screen-shop" class="hidden">
+      <button id="btn-back-from-shop">← Volver</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+        <h2>🎁 Tienda</h2>
+        <div style="border:2px solid #000; padding:8px; border-radius:8px;">💰 <span id="coins-2">0</span></div>
+      </div>
+
+      <div class="card">
+        <h3>💡 Pista</h3>
+        <p>Disponibles: <span id="pista-count-2">0</span></p>
+        <button class="btn btn-black" id="buy-pista">Comprar 15 💰</button>
+      </div>
+
+      <div class="card">
+        <h3>✨ Imán Mágico</h3>
+        <p>Disponibles: <span id="magnet-count-2">0</span></p>
+        <button class="btn btn-black" id="buy-magnet">Comprar 40 💰</button>
+      </div>
+    </div>
+
+    <!-- Congrats -->
+    <div id="screen-congrats" class="hidden center card">
+      <div style="font-size:48px;">🎉</div>
+      <h2>¡FELICITACIONES!</h2>
+      <p>Completaste todas las lecciones</p>
+      <button class="btn btn-black" id="btn-reset">Volver al inicio</button>
+    </div>
+
+  </div>
+
+  <script>
+    // State
+    let screen = 'home';
+    let coins = 850;
+    let userAnswer = '';
+    let feedback = '';
+    let isCorrect = null;
+    let selectedPet = 'dragon';
+    let streak = 12;
+    let food = 5;
+    let petHappy = 92;
+    let powerUpsDisponibles = { pista: 2, magnet: 1 };
+    let hearts = 3;
+    let currentLessonIndex = 0;
+    let currentProblemCount = 0;
+    let timeLesson = 120;
+    let lessonStarted = false;
+    let showHint = false;
+
+    const pets = {
+      dragon: { emoji: '🐉', name: 'Dragón' },
+      owl: { emoji: '🦉', name: 'Búho' },
+      robot: { emoji: '🤖', name: 'Robot' },
+      alien: { emoji: '👽', name: 'Alien' },
+      unicorn: { emoji: '🦄', name: 'Unicornio' },
+      penguin: { emoji: '🐧', name: 'Pingüino' },
+    };
+
+    const allLessons = [
+      { tema: 'Suma y Resta', ecuacion: '3x + 5 = 17', respuesta: 4, pista: '¿Qué número menos 5 da 12?' },
+      { tema: 'Suma y Resta', ecuacion: '2x + 3 = 11', respuesta: 4, pista: '¿Qué número menos 3 da 8?' },
+      { tema: 'Suma y Resta', ecuacion: '5x - 2 = 18', respuesta: 4, pista: '18 + 2 = 20, ¿20 ÷ 5 = ?' },
+      { tema: 'Suma y Resta', ecuacion: 'x + 8 = 15', respuesta: 7, pista: '¿Qué número más 8 da 15?' },
+      { tema: 'Suma y Resta', ecuacion: '6x + 1 = 19', respuesta: 3, pista: '19 - 1 = 18, ¿18 ÷ 6 = ?' },
+      { tema: 'Multiplicación', ecuacion: '2x = 10', respuesta: 5, pista: '¿Cuál es la mitad de 10?' },
+      { tema: 'Multiplicación', ecuacion: '3x = 15', respuesta: 5, pista: '¿Cuál es 15 ÷ 3?' },
+      { tema: 'Multiplicación', ecuacion: '4x = 20', respuesta: 5, pista: '¿Cuál es 20 ÷ 4?' },
+      { tema: 'Multiplicación', ecuacion: '7x = 28', respuesta: 4, pista: '¿Cuál es 28 ÷ 7?' },
+      { tema: 'Multiplicación', ecuacion: '6x = 24', respuesta: 4, pista: '¿Cuál es 24 ÷ 6?' },
+      { tema: 'División', ecuacion: 'x/2 = 3', respuesta: 6, pista: '¿Cuál es el doble de 3?' },
+      { tema: 'División', ecuacion: 'x/3 = 2', respuesta: 6, pista: '¿Cuál es el triple de 2?' },
+      { tema: 'División', ecuacion: 'x/5 = 2', respuesta: 10, pista: '¿Cuál es 5 × 2?' },
+      { tema: 'División', ecuacion: 'x/4 = 3', respuesta: 12, pista: '¿Cuál es 4 × 3?' },
+      { tema: 'División', ecuacion: 'x/2 = 8', respuesta: 16, pista: '¿Cuál es 2 × 8?' },
+      { tema: 'Operaciones Mixtas', ecuacion: '4x - 3 = 13', respuesta: 4, pista: '13 + 3 = 16, ¿16 ÷ 4 = ?' },
+      { tema: 'Operaciones Mixtas', ecuacion: '3x + 2 = 14', respuesta: 4, pista: '14 - 2 = 12, ¿12 ÷ 3 = ?' },
+      { tema: 'Operaciones Mixtas', ecuacion: '2x - 1 = 7', respuesta: 4, pista: '7 + 1 = 8, ¿8 ÷ 2 = ?' },
+      { tema: 'Operaciones Mixtas', ecuacion: '5x + 3 = 28', respuesta: 5, pista: '28 - 3 = 25, ¿25 ÷ 5 = ?' },
+      { tema: 'Operaciones Mixtas', ecuacion: '3x - 2 = 10', respuesta: 4, pista: '10 + 2 = 12, ¿12 ÷ 3 = ?' },
+      { tema: 'Términos Semejantes', ecuacion: '2x + 3x = 25', respuesta: 5, pista: '5x = 25, ¿25 ÷ 5 = ?' },
+      { tema: 'Términos Semejantes', ecuacion: '3x + 2x = 30', respuesta: 6, pista: '5x = 30, ¿30 ÷ 5 = ?' },
+      { tema: 'Términos Semejantes', ecuacion: '4x + x = 20', respuesta: 4, pista: '5x = 20, ¿20 ÷ 5 = ?' },
+      { tema: 'Términos Semejantes', ecuacion: '6x + 2x = 32', respuesta: 4, pista: '8x = 32, ¿32 ÷ 8 = ?' },
+      { tema: 'Términos Semejantes', ecuacion: '2x + 4x = 24', respuesta: 4, pista: '6x = 24, ¿24 ÷ 6 = ?' },
+      { tema: 'Fracciones', ecuacion: 'x/2 + 3 = 7', respuesta: 8, pista: '7 - 3 = 4, ¿4 × 2 = ?' },
+      { tema: 'Fracciones', ecuacion: 'x/3 + 1 = 3', respuesta: 6, pista: '3 - 1 = 2, ¿2 × 3 = ?' },
+      { tema: 'Fracciones', ecuacion: 'x/2 - 1 = 4', respuesta: 10, pista: '4 + 1 = 5, ¿5 × 2 = ?' },
+      { tema: 'Fracciones', ecuacion: 'x/4 + 2 = 5', respuesta: 12, pista: '5 - 2 = 3, ¿3 × 4 = ?' },
+      { tema: 'Fracciones', ecuacion: 'x/5 - 1 = 2', respuesta: 15, pista: '2 + 1 = 3, ¿3 × 5 = ?' },
+      { tema: 'Ecuaciones Dobles', ecuacion: '2x + 1 = x + 5', respuesta: 4, pista: '2x - x = 5 - 1' },
+      { tema: 'Ecuaciones Dobles', ecuacion: '3x + 2 = 2x + 7', respuesta: 5, pista: '3x - 2x = 7 - 2' },
+      { tema: 'Ecuaciones Dobles', ecuacion: '4x - 1 = 3x + 2', respuesta: 3, pista: '4x - 3x = 2 + 1' },
+      { tema: 'Ecuaciones Dobles', ecuacion: '5x + 3 = 4x + 8', respuesta: 5, pista: '5x - 4x = 8 - 3' },
+      { tema: 'Ecuaciones Dobles', ecuacion: '2x + 6 = x + 10', respuesta: 4, pista: '2x - x = 10 - 6' },
+      { tema: 'Potencias', ecuacion: 'x² = 16', respuesta: 4, pista: '¿Qué número al cuadrado da 16?' },
+      { tema: 'Potencias', ecuacion: 'x² = 25', respuesta: 5, pista: '¿5 al cuadrado = ?' },
+      { tema: 'Potencias', ecuacion: 'x² = 9', respuesta: 3, pista: '¿Qué número al cuadrado da 9?' },
+      { tema: 'Potencias', ecuacion: 'x² = 36', respuesta: 6, pista: '¿6 al cuadrado = ?' },
+      { tema: 'Potencias', ecuacion: 'x² = 49', respuesta: 7, pista: '¿Qué número al cuadrado da 49?' },
+      { tema: 'Paréntesis', ecuacion: '2(x + 3) = 14', respuesta: 4, pista: '14 ÷ 2 = 7, 7 - 3 = ?' },
+      { tema: 'Paréntesis', ecuacion: '3(x - 1) = 12', respuesta: 5, pista: '12 ÷ 3 = 4, 4 + 1 = ?' },
+      { tema: 'Paréntesis', ecuacion: '4(x + 2) = 20', respuesta: 3, pista: '20 ÷ 4 = 5, 5 - 2 = ?' },
+      { tema: 'Paréntesis', ecuacion: '2(x - 2) = 8', respuesta: 6, pista: '8 ÷ 2 = 4, 4 + 2 = ?' },
+      { tema: 'Paréntesis', ecuacion: '3(x + 2) = 15', respuesta: 3, pista: '15 ÷ 3 = 5, 5 - 2 = ?' },
+      { tema: 'Números Negativos', ecuacion: 'x - 5 = -2', respuesta: 3, pista: '-2 + 5 = ?' },
+      { tema: 'Números Negativos', ecuacion: 'x + 3 = -1', respuesta: -4, pista: '-1 - 3 = ?' },
+      { tema: 'Números Negativos', ecuacion: '2x = -8', respuesta: -4, pista: '¿-8 ÷ 2 = ?' },
+      { tema: 'Números Negativos', ecuacion: 'x - 7 = -3', respuesta: 4, pista: '-3 + 7 = ?' },
+      { tema: 'Números Negativos', ecuacion: '-x = -5', respuesta: 5, pista: 'x = 5' },
+    ];
+
+    const totalLessons = allLessons.length;
+
+    // Elements
+    const el = id => document.getElementById(id);
+
+    function showScreen(s) {
+      screen = s;
+      ['screen-home','screen-pets','screen-pet','screen-learning','screen-shop','screen-congrats'].forEach(id => {
+        const node = el(id);
+        if (!node) return;
+        node.classList.toggle('hidden', id !== 'screen-' + s);
+      });
+      // special case for congrats id naming
+      if (s === 'congrats') {
+        document.getElementById('screen-congrats').classList.remove('hidden');
+      }
+      render();
+    }
+
+    function currentProblem() { return allLessons[currentLessonIndex]; }
+
+    function render() {
+      // home
+      el('streak').textContent = streak;
+      const cp = pets[selectedPet];
+      el('pet-emoji').textContent = cp.emoji;
+      el('pet-name').textContent = cp.name;
+      el('pet-happy').textContent = Math.round(petHappy);
+      el('pet-happy-bar').style.width = Math.min(100, petHappy) + '%';
+      el('hearts').textContent = hearts;
+      el('food').textContent = food;
+      el('coins').textContent = coins;
+      el('current-lesson').textContent = currentLessonIndex + 1;
+      el('total-lessons').textContent = totalLessons;
+
+      // pet
+      el('pet-emoji-large').textContent = cp.emoji;
+      el('pet-name-large').textContent = cp.name;
+      el('pet-happy-2').textContent = Math.round(petHappy);
+      el('pet-happy-bar-2').style.width = Math.min(100, petHappy) + '%';
+      el('food-2').textContent = food;
+      el('food-bar').style.width = Math.min((food / 10) * 100, 100) + '%';
+      el('pet-level').textContent = Math.floor(currentLessonIndex / 5) + 1;
+
+      // learning
+      el('total-lessons-2').textContent = totalLessons;
+      el('lesson-topic').textContent = currentProblem().tema;
+      el('lesson-number').textContent = currentLessonIndex + 1;
+      el('problem-number').textContent = currentProblemCount + 1;
+      el('timer-text').textContent = '⏱️ ' + formatTime(timeLesson);
+      el('equation-box').textContent = currentProblem().ecuacion;
+      el('pet-hint').textContent = (pets[selectedPet].emoji + ' ' + pets[selectedPet].name + ': "' + currentProblem().pista + '"');
+      el('pista-count').textContent = powerUpsDisponibles.pista;
+      el('magnet-count').textContent = powerUpsDisponibles.magnet;
+      el('pista-count-2').textContent = powerUpsDisponibles.pista;
+      el('magnet-count-2').textContent = powerUpsDisponibles.magnet;
+      el('coins-2').textContent = coins;
+
+      // feedback
+      if (feedback) {
+        const fb = el('feedback-box');
+        fb.style.display = 'block';
+        fb.textContent = feedback;
+        fb.style.background = isCorrect ? '#fff' : '#000';
+        fb.style.color = isCorrect ? '#000' : '#fff';
+      } else {
+        el('feedback-box').style.display = 'none';
+      }
+
+      // hint expanded
+      el('hint-expand').style.display = showHint ? 'block' : 'none';
+
+      // hearts display
+      const heartsNode = el('life-hearts');
+      heartsNode.innerHTML = '';
+      for (let i=0;i<3;i++) heartsNode.innerHTML += (i<hearts ? '❤️' : '🖤');
+
+      // progress bar mini
+      const prog = document.getElementById('progress-bar-container');
+      if (prog) {
+        prog.style.background = '#e5e7eb';
+        prog.innerHTML = '';
+        const inner = document.createElement('div');
+        inner.style.width = (currentProblemCount * 20) + '%';
+        inner.style.height = '100%';
+        inner.style.background = '#000';
+        prog.appendChild(inner);
+      }
+
+      // game over
+      if (hearts <= 0) {
+        el('btn-check').textContent = '❌ Game Over';
+        el('btn-check').disabled = true;
+      } else {
+        el('btn-check').textContent = '✓ Verificar';
+        el('btn-check').disabled = false;
+      }
+
+      // congrats
+      if (currentLessonIndex >= totalLessons) {
+        showScreen('congrats');
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec/60);
+      const s = sec % 60;
+      return m + ':' + String(s).padStart(2,'0');
+    }
+
+    // Timer loop
+    let timerInterval = null;
+    function startTimerIfNeeded() {
+      if (lessonStarted && screen === 'learning' && timeLesson > 0) {
+        if (timerInterval) return;
+        timerInterval = setInterval(() => {
+          timeLesson = Math.max(0, timeLesson - 1);
+          if (timeLesson === 0) {
+            hearts = 0;
+            stopTimer();
+          }
+          render();
+        }, 1000);
+      }
+    }
+    function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+
+    // Actions
+    function checkAnswer() {
+      const ans = parseFloat(el('answer-input').value);
+      const cp = currentProblem();
+      if (!Number.isFinite(ans) || ans === null || el('answer-input').value === '') return;
+      if (ans === cp.respuesta) {
+        isCorrect = true;
+        feedback = '✅ ¡Correcto!';
+        streak++;
+        food += 10;
+        coins += 10;
+        petHappy = Math.min(100, petHappy + 5);
+        currentProblemCount++;
+        if (currentProblemCount >= 5) {
+          currentLessonIndex++;
+          currentProblemCount = 0;
+        }
+      } else {
+        isCorrect = false;
+        feedback = '❌ Incorrecto. La respuesta es ' + cp.respuesta;
+        hearts = Math.max(0, hearts - 1);
+        streak = 0;
+      }
+      render();
+    }
+
+    function resetLesson() {
+      screen = 'home';
+      userAnswer = '';
+      feedback = '';
+      isCorrect = null;
+      currentProblemCount = 0;
+      lessonStarted = false;
+      timeLesson = 120;
+      showHint = false;
+      stopTimer();
+      showScreen('home');
+    }
+
+    function handleAlimentar() {
+      const cp = pets[selectedPet];
+      if (food > 0) {
+        food = Math.max(0, food - 1);
+        petHappy = Math.min(100, petHappy + 15);
+        alert('🍖 ¡Alimentaste a ' + cp.name + '!');
+      } else {
+        alert('❌ No tienes comida');
+      }
+      render();
+    }
+
+    function usePista() {
+      if (powerUpsDisponibles.pista > 0) {
+        powerUpsDisponibles.pista--;
+        showHint = true;
+      } else {
+        alert('❌ No tienes pistas');
+      }
+      render();
+    }
+
+    function useMagnet() {
+      if (powerUpsDisponibles.magnet > 0) {
+        powerUpsDisponibles.magnet--;
+        el('answer-input').value = String(currentProblem().respuesta);
+      } else {
+        alert('❌ No tienes imanes');
+      }
+      render();
+    }
+
+    function buyPista() {
+      if (coins >= 15) {
+        coins -= 15;
+        powerUpsDisponibles.pista++;
+        alert('✅ ¡Comprado!');
+      } else {
+        alert('❌ No tienes suficientes monedas');
+      }
+      render();
+    }
+
+    function buyMagnet() {
+      if (coins >= 40) {
+        coins -= 40;
+        powerUpsDisponibles.magnet++;
+        alert('✅ ¡Comprado!');
+      } else {
+        alert('❌ No tienes suficientes monedas');
+      }
+      render();
+    }
+
+    // Event bindings
+    document.getElementById('btn-start').addEventListener('click', () => {
+      lessonStarted = true;
+      timeLesson = 120;
+      showScreen('learning');
+      startTimerIfNeeded();
+    });
+    document.getElementById('btn-shop').addEventListener('click', () => showScreen('shop'));
+    document.getElementById('btn-change').addEventListener('click', () => showScreen('pets'));
+    document.getElementById('btn-care').addEventListener('click', () => showScreen('pet'));
+    document.getElementById('btn-back-from-pets').addEventListener('click', () => showScreen('home'));
+    document.querySelectorAll('[data-pet]').forEach(b => b.addEventListener('click', (e) => {
+      selectedPet = e.currentTarget.getAttribute('data-pet');
+      showScreen('home');
+    }));
+    document.getElementById('btn-back-from-pet').addEventListener('click', () => showScreen('home'));
+    document.getElementById('btn-feed').addEventListener('click', handleAlimentar);
+    document.getElementById('btn-back-from-learning').addEventListener('click', resetLesson);
+    document.getElementById('btn-hint').addEventListener('click', usePista);
+    document.getElementById('btn-magnet').addEventListener('click', useMagnet);
+    document.getElementById('btn-check').addEventListener('click', () => { checkAnswer(); render(); });
+    document.getElementById('btn-back-from-shop').addEventListener('click', () => showScreen('home'));
+    document.getElementById('buy-pista').addEventListener('click', buyPista);
+    document.getElementById('buy-magnet').addEventListener('click', buyMagnet);
+    document.getElementById('btn-reset').addEventListener('click', resetLesson);
+
+    // initial values
+    render();
+  </script>
+</body>
+</html>
